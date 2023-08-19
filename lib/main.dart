@@ -8,7 +8,7 @@ import 'package:syncwallet/contexts/contexts.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (_) => LoginController(),
+      create: (_) => AuthProvider(),
       child: MyApp(),
     ),
   );

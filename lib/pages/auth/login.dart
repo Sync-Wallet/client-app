@@ -22,10 +22,10 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            Consumer<LoginController>(builder: (context, login, child) {
+            Consumer<AuthProvider>(builder: (context, authData, child) {
               return TextField(
                 onChanged: (value) {
-                  login.setEmail(value); // Update the state
+                  authData.setEmail(value); // Update the state
                 },
                 autofocus: true,
                 cursorColor: Colors.white,
@@ -57,12 +57,11 @@ class LoginPage extends StatelessWidget {
                 ),
               );
             }),
-
             SizedBox(height: 20),
-            Consumer<LoginController>(builder: (context, login, child) {
+            Consumer<AuthProvider>(builder: (context, authData, child) {
               return TextField(
                 onChanged: (value) {
-                  login.setPassword(value); // Update the state
+                  authData.setPassword(value); // Update the state
                 },
                 autofocus: true,
                 obscureText: true,
@@ -95,41 +94,42 @@ class LoginPage extends StatelessWidget {
                 ),
               );
             }),
-
             SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               height: 50,
-              child: FilledButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xffcef24b),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2),
+              child: Consumer<AuthProvider>(builder: (context, authData, child) {
+                return FilledButton(
+                  onPressed: authData.login,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xffcef24b),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
             ),
-            // Consumer<LoginController>(
-            //   builder: (context, login, child) {
-            //     return Column(
-            //       children: [
-            //         Text('Email: ${login.email}',
-            //             style: TextStyle(color: Colors.white)),
-            //         Text('Password: ${login.password}',
-            //             style: TextStyle(color: Colors.white)),
-            //       ],
-            //     );
-            //   },
-            // ),
+            Consumer<AuthProvider>(
+              builder: (context, authData, child) {
+                return Column(
+                  children: [
+                    Text('Email: ${authData.email}',
+                        style: TextStyle(color: Colors.white)),
+                    Text('Password: ${authData.message}',
+                        style: TextStyle(color: Colors.white)),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       )),

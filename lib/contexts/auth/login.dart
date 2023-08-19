@@ -16,4 +16,12 @@ class LoginController extends ChangeNotifier {
     _password = value;
     notifyListeners();
   }
+
+  void login() {
+    if (_email == '' || _password == '') {
+      throw Exception('Email and password are required');
+    }
+
+
+  }
 }
