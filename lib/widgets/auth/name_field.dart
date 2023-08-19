@@ -22,7 +22,7 @@ class NameField extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-         SizedBox(height: 5),
+         const SizedBox(height: 5),
           const Text(
             'Add your name so that friends can find you',
             style: TextStyle(
@@ -31,9 +31,12 @@ class NameField extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-          const TextField(
+          TextField(
             autofocus: true,
             cursorColor: Colors.white,
+            onChanged: (value) {
+              Provider.of<AuthProvider>(context, listen: false).setName(value);
+            },
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,

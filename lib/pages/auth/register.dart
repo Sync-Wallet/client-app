@@ -36,7 +36,7 @@ class RegisterPage extends StatelessWidget {
                 }
               },
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Consumer<AuthProvider>(
               builder: (context, authData, child) {
                 Widget w = NameField();

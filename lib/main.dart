@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
       ),
-      home: RegisterPage(),
+      home: LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }

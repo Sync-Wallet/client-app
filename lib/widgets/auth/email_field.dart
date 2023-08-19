@@ -32,9 +32,12 @@ class EmailField extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-          const TextField(
+          TextField(
             autofocus: true,
             cursorColor: Colors.white,
+            onChanged: (value) {
+              Provider.of<AuthProvider>(context, listen: false).setEmail(value);
+            },
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,

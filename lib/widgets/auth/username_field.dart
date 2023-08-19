@@ -21,7 +21,7 @@ class UsernameField extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           const Text(
             'Add a username or use our suggestion. You can change it later.',
             style: TextStyle(
@@ -30,7 +30,10 @@ class UsernameField extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-          const TextField(
+            TextField(
+              onChanged: (value) {
+              Provider.of<AuthProvider>(context, listen: false).setUsername(value);
+            },
             autofocus: true,
             cursorColor: Colors.white,
             style: TextStyle(

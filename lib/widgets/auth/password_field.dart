@@ -30,9 +30,12 @@ class PasswordField extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-          const TextField(
+          TextField(
             autofocus: true,
             obscureText: true,
+            onChanged: (value) {
+              Provider.of<AuthProvider>(context, listen: false).setPassword(value);
+            },
             cursorColor: Colors.white,
             style: TextStyle(
               color: Colors.white,

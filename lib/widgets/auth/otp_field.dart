@@ -34,7 +34,10 @@ class OTPField extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-          const TextField(
+          TextField(
+            onChanged: (value) {
+              Provider.of<AuthProvider>(context, listen: false).setOTP(value);
+            },
             autofocus: true,
             cursorColor: Colors.white,
             style: TextStyle(
