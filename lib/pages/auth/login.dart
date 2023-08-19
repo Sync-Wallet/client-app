@@ -124,7 +124,7 @@ class LoginPage extends StatelessWidget {
                   children: [
                     Text('Email: ${authData.email}',
                         style: TextStyle(color: Colors.white)),
-                    Text('Password: ${authData.message}',
+                    Text('Password: ${authData.password}',
                         style: TextStyle(color: Colors.white)),
                   ],
                 );
