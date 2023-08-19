@@ -113,13 +113,9 @@ class AuthProvider extends ChangeNotifier {
     };
 
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
-
-    _message = 'done';
-
     final res = await jsonDecode(response.body);
 
     print(res);
-
     setToken(res['token']);
     setId(res['user']['_id']);
     setName(res['user']['name']);
