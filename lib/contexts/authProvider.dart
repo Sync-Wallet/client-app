@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:io';
 
 enum AuthMode { none, loading }
+enum RegisterStep {name, email, username, password, otp}
 const baseURL = 'http://192.168.1.3:3000/api/v1/auth';
 
 class AuthProvider extends ChangeNotifier {
@@ -17,6 +17,7 @@ class AuthProvider extends ChangeNotifier {
   bool _isVerified = false;
   String _message = '';
   AuthMode _authMode = AuthMode.none;
+  RegisterStep _registerStep = RegisterStep.name;
 
   // getters
   String get id => _id;
@@ -28,6 +29,7 @@ class AuthProvider extends ChangeNotifier {
   String get token => _token;
   bool get isVerified => _isVerified;
   String get message => _message;
+  RegisterStep get registerStep => _registerStep;
   AuthMode get authMode => _authMode;
 
 
@@ -72,6 +74,16 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setMessage(String message) {
+    _message = message;
+    notifyListeners();
+  }
+
+  void setRegisterStep(RegisterStep registerStep) {
+    _registerStep = registerStep;
+    notifyListeners();
+  }
+
   void setAuthMode(AuthMode authMode) {
     _authMode = authMode;
     notifyListeners();
@@ -86,6 +98,8 @@ class AuthProvider extends ChangeNotifier {
     _otp = '';
     _token = '';
     _isVerified = false;
+    _message = '';
+    _registerStep = RegisterStep.name;
     _authMode = AuthMode.none;
     notifyListeners();
   }
@@ -115,7 +129,7 @@ class AuthProvider extends ChangeNotifier {
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     final res = await jsonDecode(response.body);
 
-    print(res);
+    // print(res);
     setToken(res['token']);
     setId(res['user']['_id']);
     setName(res['user']['name']);

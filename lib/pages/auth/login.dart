@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncwallet/contexts/contexts.dart';
+import 'package:syncwallet/pages/pages.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -100,7 +101,13 @@ class LoginPage extends StatelessWidget {
               height: 50,
               child: Consumer<AuthProvider>(builder: (context, authData, child) {
                 return FilledButton(
-                  onPressed: authData.login,
+                  onPressed: () {
+                    authData.login();
+                    if (authData.isVerified) {
+                      Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => HomePage()));
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xffcef24b),
                     shape: RoundedRectangleBorder(
@@ -118,18 +125,18 @@ class LoginPage extends StatelessWidget {
                 );
               }),
             ),
-            Consumer<AuthProvider>(
-              builder: (context, authData, child) {
-                return Column(
-                  children: [
-                    Text('Email: ${authData.email}',
-                        style: TextStyle(color: Colors.white)),
-                    Text('Password: ${authData.password}',
-                        style: TextStyle(color: Colors.white)),
-                  ],
-                );
-              },
-            ),
+            // Consumer<AuthProvider>(
+            //   builder: (context, authData, child) {
+            //     return Column(
+            //       children: [
+            //         Text('Email: ${authData.email}',
+            //             style: TextStyle(color: Colors.white)),
+            //         Text('Password: ${authData.password}',
+            //             style: TextStyle(color: Colors.white)),
+            //       ],
+            //     );
+            //   },
+            // ),
           ],
         ),
       )),
