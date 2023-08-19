@@ -1,29 +1,41 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
 
 enum AuthMode { none, loading }
-const baseURL = 'https://localhost:3000/api/v1';
+const baseURL = 'http://192.168.1.3:3000/api/v1/auth';
 
 class AuthProvider extends ChangeNotifier {
+  String _id = '';
   String _name = '';
   String _password = '';
   String _email = '';
   String _username = '';
   String _otp = '';
   String _token = '';
-  // bool _showMessage = false;
+  bool _isVerified = false;
   String _message = '';
   AuthMode _authMode = AuthMode.none;
 
+  // getters
+  String get id => _id;
   String get name => _name;
   String get password => _password;
   String get email => _email;
   String get username => _username;
   String get otp => _otp;
   String get token => _token;
+  bool get isVerified => _isVerified;
   String get message => _message;
   AuthMode get authMode => _authMode;
+
+
+  // setters
+  void setId(String id) {
+    _id = id;
+    notifyListeners();
+  }
 
   void setName(String name) {
     _name = name;
@@ -45,6 +57,11 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setIsVerified(bool isVerified) {
+    _isVerified = isVerified;
+    notifyListeners();
+  }
+
   void setOTP(String otp) {
     _otp = otp;
     notifyListeners();
@@ -61,12 +78,14 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void reset() {
+    _id = '';
     _name = '';
     _password = '';
     _email = '';
     _username = '';
     _otp = '';
     _token = '';
+    _isVerified = false;
     _authMode = AuthMode.none;
     notifyListeners();
   }
@@ -76,41 +95,38 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetOTP() {
-    _otp = '';
-    notifyListeners();
-  }
-
-  void resetPassword() {
-    _password = '';
-    notifyListeners();
-  }
-
-  void resetToken() {
-    _token = '';
-    notifyListeners();
-  }
-
   Future<void> login() async{
     _authMode = AuthMode.loading;
-    if (_email == '' || _name == '') {
+    if (_email == '' || _password == '') {
       _authMode = AuthMode.none;
       return;
     }
 
     final url = Uri.parse('$baseURL/login');
-    final headers = {'Content-Type': 'application/json'};
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $_token',
+    };
     final body = {
       'email': _email,
       'password': _password,
     };
 
-    final response = await http.post(url, headers: headers, body: jsonEncode(body));
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
 
     _message = 'done';
 
-    print(response);
+    final res = await jsonDecode(response.body);
 
+    print(res);
+
+    setToken(res['token']);
+    setId(res['user']['_id']);
+    setName(res['user']['name']);
+    setEmail(res['user']['email']);
+    setUsername(res['user']['username']);
+    setIsVerified(res['user']['isVerified']);
+    setAuthMode(AuthMode.none);
 
     notifyListeners();
   }
