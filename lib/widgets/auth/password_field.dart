@@ -21,12 +21,12 @@ class PasswordField extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 2),
           const Text(
             'Create a password with at least 6 letters or numbers. It should be something others can\'t guess.',
             style: TextStyle(
               color: Color.fromRGBO(254, 254, 254, 0.85),
-              fontSize: 14,
+              fontSize: 12,
             ),
           ),
           const SizedBox(height: 30),
@@ -39,15 +39,13 @@ class PasswordField extends StatelessWidget {
             cursorColor: Colors.white,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
+              fontSize: 16,
             ),
             decoration: InputDecoration(
               labelText: 'Password',
               labelStyle: TextStyle(
                 color: Color.fromRGBO(254, 254, 254, 0.5),
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
+                fontSize: 16,
               ),
               filled: true,
               fillColor: Color.fromRGBO(30, 28, 36, 1),
@@ -83,8 +81,7 @@ class PasswordField extends StatelessWidget {
                 'Next',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
               ),
             ),

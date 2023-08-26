@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncwallet/contexts/contexts.dart';
+import 'package:syncwallet/pages/home_page.dart';
 
 
 class OTPField extends StatelessWidget {
@@ -24,13 +25,13 @@ class OTPField extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 2),
 
           Text(
             'To confirm your account, enter the 6-digt code that we sent to $email.',
             style: TextStyle(
               color: Color.fromRGBO(254, 254, 254, 0.85),
-              fontSize: 14,
+              fontSize: 12,
             ),
           ),
           const SizedBox(height: 30),
@@ -38,20 +39,19 @@ class OTPField extends StatelessWidget {
             onChanged: (value) {
               Provider.of<AuthProvider>(context, listen: false).setOTP(value);
             },
+            keyboardType: TextInputType.number,
             autofocus: true,
             cursorColor: Colors.white,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
+              fontSize: 16,
             ),
             decoration: InputDecoration(
               // hintText: 'Name',
               labelText: 'OTP',
               labelStyle: TextStyle(
                 color: Color.fromRGBO(254, 254, 254, 0.5),
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
+                fontSize: 16,
               ),
               filled: true,
               fillColor: Color.fromRGBO(30, 28, 36, 1),
@@ -71,9 +71,15 @@ class OTPField extends StatelessWidget {
           const SizedBox(height: 20),
           SizedBox(
             width: double.infinity,
-            height: 50,
+            height: 55,
             child: FilledButton(
-              onPressed: () {},
+              onPressed: () {
+                final authData = Provider.of<AuthProvider>(context, listen: false);
+                authData.verify();
+                if (authData.isVerified) {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xffcef24b),
                 shape: RoundedRectangleBorder(
@@ -84,8 +90,7 @@ class OTPField extends StatelessWidget {
                 'Next',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
               ),
             ),

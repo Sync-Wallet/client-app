@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 enum AuthMode { none, loading }
 enum RegisterStep {name, email, username, password, otp}
-const baseURL = 'http://192.168.1.3:3000/api/v1/auth';
+const baseURL = 'http://192.168.1.7:3000/api/v1/auth';
 
 class AuthProvider extends ChangeNotifier {
   String _id = '';
@@ -13,7 +14,6 @@ class AuthProvider extends ChangeNotifier {
   String _email = '';
   String _username = '';
   String _otp = '';
-  String _token = '';
   bool _isVerified = false;
   String _message = '';
   AuthMode _authMode = AuthMode.none;
@@ -26,12 +26,20 @@ class AuthProvider extends ChangeNotifier {
   String get email => _email;
   String get username => _username;
   String get otp => _otp;
-  String get token => _token;
   bool get isVerified => _isVerified;
   String get message => _message;
   RegisterStep get registerStep => _registerStep;
   AuthMode get authMode => _authMode;
+  Future<String> get token async {
+    final storage = await SharedPreferences.getInstance();
+    return storage.getString('token') ?? '';
+  }
 
+  bool get loggedIn {
+    final _token = token;
+    return true;
+  }
+  // TODO: loggedIn
 
   // setters
   void setId(String id) {
@@ -69,9 +77,9 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setToken(String token) {
-    _token = token;
-    notifyListeners();
+  Future<void> setToken(String token) async {
+    final storage = await SharedPreferences.getInstance();
+    storage.setString('token', token);
   }
 
   void setMessage(String message) {
@@ -96,7 +104,6 @@ class AuthProvider extends ChangeNotifier {
     _email = '';
     _username = '';
     _otp = '';
-    _token = '';
     _isVerified = false;
     _message = '';
     _registerStep = RegisterStep.name;
@@ -111,19 +118,19 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> login() async{
     _authMode = AuthMode.loading;
-    if (_email == '' || _password == '') {
-      _authMode = AuthMode.none;
+    if (email == '' || password == '') {
+      setAuthMode(AuthMode.none);
       return;
     }
 
     final url = Uri.parse('$baseURL/login');
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $_token',
+      'Authorization': 'Bearer $token',
     };
     final body = {
-      'email': _email,
-      'password': _password,
+      'email': email,
+      'password': password,
     };
 
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
@@ -133,7 +140,6 @@ class AuthProvider extends ChangeNotifier {
     setToken(res['token']);
     setId(res['user']['_id']);
     setName(res['user']['name']);
-    setEmail(res['user']['email']);
     setUsername(res['user']['username']);
     setIsVerified(res['user']['isVerified']);
     setAuthMode(AuthMode.none);
@@ -141,4 +147,56 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> register() async {
+    setAuthMode(AuthMode.loading);
+    if (email == '' || password == '' || username == '' || name == '') {
+      setAuthMode(AuthMode.none);
+      return;
+    }
+
+    final url = Uri.parse('$baseURL/register');
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+    final body = {
+      'email': email,
+      'password': password,
+      'username': username,
+      'name': name,
+    };
+
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+
+    final res = await jsonDecode(response.body);
+    if (!res['success']) {
+      setAuthMode(AuthMode.none);
+      return;
+    }
+  }
+
+  Future<void> verify() async {
+    setAuthMode(AuthMode.loading);
+    final url = Uri.parse('$baseURL/verify');
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+    final body = {
+      'email': email,
+      'otp': otp,
+    };
+
+    http.Response otpResponse = await http.post(url, headers: headers, body: jsonEncode(body));
+    final res = await jsonDecode(otpResponse.body);
+    if (!res['success']) {
+      setAuthMode(AuthMode.none);
+      return;
+    }
+
+    setId(res['user']['_id']);
+    setIsVerified(res['user']['isVerified']);
+    setToken(res['token']);
+    setAuthMode(AuthMode.none);
+  }
 }
+
+// TODO 1: otp api must receive password too to avoid sending otp to wrong email

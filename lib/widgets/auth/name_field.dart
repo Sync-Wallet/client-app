@@ -22,33 +22,31 @@ class NameField extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-         const SizedBox(height: 5),
+         const SizedBox(height: 2),
           const Text(
             'Add your name so that friends can find you',
             style: TextStyle(
               color: Color.fromRGBO(254, 254, 254, 0.85),
-              fontSize: 14,
+              fontSize: 12,
             ),
           ),
           const SizedBox(height: 30),
           TextField(
             autofocus: true,
             cursorColor: Colors.white,
+
             onChanged: (value) {
               Provider.of<AuthProvider>(context, listen: false).setName(value);
             },
             style: TextStyle(
               color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
+              fontSize: 16,
             ),
             decoration: InputDecoration(
-              // hintText: 'Name',
               labelText: 'Name',
               labelStyle: TextStyle(
                 color: Color.fromRGBO(254, 254, 254, 0.5),
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
+                fontSize: 16,
               ),
               filled: true,
               fillColor: Color.fromRGBO(30, 28, 36, 1),
@@ -71,8 +69,11 @@ class NameField extends StatelessWidget {
             height: 55,
             child: FilledButton(
               onPressed: () {
-                Provider.of<AuthProvider>(context, listen: false)
-                    .setRegisterStep(RegisterStep.password);
+                final authData = Provider.of<AuthProvider>(context, listen: false);
+                if (authData.name == null || authData.name.isEmpty) {
+                  // return;
+                }
+                authData.setRegisterStep(RegisterStep.password);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xffcef24b),
@@ -84,8 +85,8 @@ class NameField extends StatelessWidget {
                 'Next',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  // fontWeight: FontWeight.w600,
                 ),
               ),
             ),

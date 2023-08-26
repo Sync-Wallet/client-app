@@ -21,12 +21,12 @@ class UsernameField extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 2),
           const Text(
             'Add a username or use our suggestion. You can change it later.',
             style: TextStyle(
               color: Color.fromRGBO(254, 254, 254, 0.85),
-              fontSize: 14,
+              fontSize: 12,
             ),
           ),
           const SizedBox(height: 30),
@@ -38,15 +38,14 @@ class UsernameField extends StatelessWidget {
             cursorColor: Colors.white,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
+              fontSize: 16,
             ),
             decoration: InputDecoration(
               // hintText: 'Name',
               labelText: 'Username',
               labelStyle: TextStyle(
                 color: Color.fromRGBO(254, 254, 254, 0.5),
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
               filled: true,
@@ -83,8 +82,7 @@ class UsernameField extends StatelessWidget {
                 'Next',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
               ),
             ),

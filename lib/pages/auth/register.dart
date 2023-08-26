@@ -7,6 +7,7 @@ import 'package:syncwallet/widgets/auth/email_field.dart';
 import 'package:syncwallet/widgets/auth/otp_field.dart';
 import 'package:syncwallet/widgets/auth/password_field.dart';
 import 'package:syncwallet/contexts/authProvider.dart';
+import 'package:syncwallet/pages/auth/auth_page.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -20,19 +21,30 @@ class RegisterPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Color(0xffcef24b),
+              ),
               onPressed: () {
-                RegisterStep step = Provider.of<AuthProvider>(context, listen: false).registerStep;
+                RegisterStep step =
+                    Provider.of<AuthProvider>(context, listen: false)
+                        .registerStep;
 
                 if (step == RegisterStep.password) {
-                  Provider.of<AuthProvider>(context, listen: false).setRegisterStep(RegisterStep.name);
+                  Provider.of<AuthProvider>(context, listen: false)
+                      .setRegisterStep(RegisterStep.name);
                 } else if (step == RegisterStep.username) {
-                  Provider.of<AuthProvider>(context, listen: false).setRegisterStep(RegisterStep.password);
+                  Provider.of<AuthProvider>(context, listen: false)
+                      .setRegisterStep(RegisterStep.password);
                 } else if (step == RegisterStep.email) {
-                  Provider.of<AuthProvider>(context, listen: false).setRegisterStep(RegisterStep.username);
+                  Provider.of<AuthProvider>(context, listen: false)
+                      .setRegisterStep(RegisterStep.username);
                 } else if (step == RegisterStep.otp) {
-                  Provider.of<AuthProvider>(context, listen: false).setRegisterStep(RegisterStep.email);
-                }  else if (step == RegisterStep.name) {
+                  Provider.of<AuthProvider>(context, listen: false)
+                      .setRegisterStep(RegisterStep.email);
+                } else if (step == RegisterStep.name) {
+                  Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => AuthPage()));
                 }
               },
             ),

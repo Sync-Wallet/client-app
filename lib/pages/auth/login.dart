@@ -9,6 +9,9 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xff000000),
+      ),
       body: SafeArea(
           child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -121,18 +124,6 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            // Consumer<AuthProvider>(
-            //   builder: (context, authData, child) {
-            //     return Column(
-            //       children: [
-            //         Text('Email: ${authData.email}',
-            //             style: TextStyle(color: Colors.white)),
-            //         Text('Password: ${authData.password}',
-            //             style: TextStyle(color: Colors.white)),
-            //       ],
-            //     );
-            //   },
-            // ),
           ],
         ),
       )),

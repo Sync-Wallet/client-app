@@ -22,13 +22,13 @@ class EmailField extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 2),
           const Text(
             'Enter the email address at which you can be contacted. '
             'No one will see this on your profile.',
             style: TextStyle(
               color: Color.fromRGBO(254, 254, 254, 0.85),
-              fontSize: 14,
+              fontSize: 12,
             ),
           ),
           const SizedBox(height: 30),
@@ -40,16 +40,14 @@ class EmailField extends StatelessWidget {
             },
             style: TextStyle(
               color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
+              fontSize: 16,
             ),
             decoration: InputDecoration(
               // hintText: 'Name',
               labelText: 'Email',
               labelStyle: TextStyle(
                 color: Color.fromRGBO(254, 254, 254, 0.5),
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
+                fontSize: 16,
               ),
               filled: true,
               fillColor: Color.fromRGBO(30, 28, 36, 1),
@@ -69,11 +67,12 @@ class EmailField extends StatelessWidget {
           const SizedBox(height: 20),
           SizedBox(
             width: double.infinity,
-            height: 50,
+            height: 55,
             child: FilledButton(
               onPressed: () {
-                Provider.of<AuthProvider>(context, listen: false)
-                    .setRegisterStep(RegisterStep.otp);
+                final authData = Provider.of<AuthProvider>(context, listen: false);
+                authData.register();
+                authData.setRegisterStep(RegisterStep.otp);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xffcef24b),
@@ -85,8 +84,7 @@ class EmailField extends StatelessWidget {
                 'Next',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
               ),
             ),
